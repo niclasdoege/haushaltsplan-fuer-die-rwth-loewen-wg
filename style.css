@@ -1,0 +1,55 @@
+table { 
+    width: 100vw;
+    height: 100vh;
+***REMOVED***
+button{
+    font-size: 6em;
+    background: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    border-radius: 5px;
+    border: none;
+    margin-left: 2vw;
+    margin-right: auto;
+***REMOVED***
+button:active {
+    background: rgb(36, 36, 36);
+    cursor: pointer;
+***REMOVED***
+.date{
+    font-size: 4em;
+    width: 10vw;
+***REMOVED***
+
+.center {
+    margin-left: 0;
+    margin-right: auto;
+  ***REMOVED***
+
+#wrapper {
+    margin:0;padding:0;
+  ***REMOVED***
+
+th, td {
+  background-color: rgba(0, 0, 0, 0.5);
+  background-blend-mode:saturation;
+  border: 1px solid black;
+  border-radius: 100px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 100px;
+  -ms-border-radius: 100px;
+  -o-border-radius: 100px;
+***REMOVED***
+
+td { 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    word-wrap: break-word;
+***REMOVED***
+
+@media only screen and (max-width: 720px) {
+    /* horizontal scrollbar for tables if mobile screen */
+    .tablemobile {
+        overflow-x: auto;
+        display: block;
+    ***REMOVED***
+***REMOVED***
