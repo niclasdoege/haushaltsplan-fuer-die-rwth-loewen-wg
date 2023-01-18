@@ -1,13 +1,34 @@
-//#[macro_use] extern crate rocket;
 
-//use std::error::Error;
 use yew::prelude::*;
 use yew_router::prelude::*;
-use serde::{Deserialize***REMOVED***;
+use serde::{Deserialize, Serialize***REMOVED***;
 use chrono::{TimeZone, Duration, Local, Datelike, Timelike, Utc***REMOVED***;
 use yew::{html, Callback***REMOVED***;
-use futures::Future;
-use futures::FutureExt;
+use gloo::timers::callback::{Timeout***REMOVED***;
+
+static IPOFBACKEND: &str = "insert backend ip";
+
+#[derive(Clone, PartialEq, Debug)]
+struct ModalObj {
+    modal_content:Html,
+***REMOVED***
+#[derive(Properties, PartialEq)]
+pub struct ModalProps {
+    #[prop_or_default]
+    pub children: Children,
+***REMOVED***
+
+#[function_component(Modal)]
+fn modal(ModalProps {children***REMOVED***: &ModalProps) -> Html {
+    let modal_host = gloo::utils::document()
+        .get_element_by_id("modal_host")
+        .expect("Expected to find a #modal_host element");
+
+    create_portal(
+        html!{ {for children.iter()***REMOVED*** ***REMOVED***,
+        modal_host.into(),
+    )
+***REMOVED***
 
 static name_list:[&str; 3] = ["niclas","marc","mikiya"];
 
@@ -16,7 +37,6 @@ struct Model {
     // other fields here
     button_click_callback: Callback<usize>,
 ***REMOVED***
-
 
 #[derive(Clone, Routable, PartialEq)]
 enum Route {
@@ -28,7 +48,6 @@ enum Route {
     #[at("/404")]
     NotFound,
 ***REMOVED***
-
 
 #[function_component(Secure)]
 fn secure() -> Html {
@@ -43,11 +62,11 @@ fn secure() -> Html {
     ***REMOVED***
 ***REMOVED***
 
-
 fn switch(routes: Route) -> Html {
     match routes {
         Route::Home => html! { 
-            <App /> ***REMOVED***,
+            <App />
+             ***REMOVED***,
         Route::Secure => html! {
             <Secure />
         ***REMOVED***,
@@ -55,7 +74,7 @@ fn switch(routes: Route) -> Html {
     ***REMOVED***
 ***REMOVED***
 
-#[derive(Clone, PartialEq, Deserialize, Debug)]
+#[derive(Clone, PartialEq, Deserialize, Serialize, Debug)]
 struct Table {
     marc: (String,String),
     mikiya: (String,String),
@@ -69,6 +88,7 @@ struct LastDone {
     kitchen: String,
     doorway: String,
     bathroom: String,
+    id: usize
 ***REMOVED***
 
 
@@ -100,46 +120,11 @@ fn Tables_list(TablesListProps { tables, on_click ***REMOVED***: &TablesListProp
 #[derive(Properties, PartialEq)]
 struct NamesListProps {
     names: Vec<String>,
-//    on_click: Callback<Table>
 ***REMOVED***
 
-#[function_component(NamesList)]
-#[allow(non_snake_case)]
-fn Names_list(NamesListProps {names***REMOVED***: &NamesListProps) -> Html {
-    //let on_click = on_click.clone();
-    names.iter().map(|name| {
-        let on_table_select = {
-            //let on_click = on_click.clone();
-            let name = name.clone();
-            //Callback::from(move |_| {
-            //        on_click.emit(table.clone())
-            //    ***REMOVED***)
-            ***REMOVED***;
-    
-            html! {
-                <p>{format!("{***REMOVED***",name)***REMOVED***</p>
-            ***REMOVED***
-        ***REMOVED***).collect()
-***REMOVED***
+use std::error::Error;
 
-//name_list_yew_thingie: NamesListProps = new NamesListProps
-
-
-enum Person{
-    Marc,
-    Niclas,
-    Mikiya
-***REMOVED***
-
-
-
-
-
-
-
-
-
-async fn send_postrequest_to_change_table_json(which_week: i64, who:&str) {
+async fn send_postrequest_to_change_table_json(which_week: i64, who:&str) -> Result<(), Box<(dyn Error + 'static)>>{
     
         //let temp_date=format!("{:02***REMOVED***-{:02***REMOVED***-{***REMOVED***", date.day(), date.month(), date.year());
         //fourteen_days.push((temp_date, environment_of_the_fourteen_days[blah+9]));
@@ -162,6 +147,7 @@ async fn send_postrequest_to_change_table_json(which_week: i64, who:&str) {
         "marc" => {what_to_tell_marc=string_date;***REMOVED***
         "mikiya" => {what_to_tell_mikiya=string_date;***REMOVED***
         "niclas" => {what_to_tell_niclas=string_date;***REMOVED***
+        &_ =>{what_to_tell_niclas="nein nein nein".to_string();***REMOVED***
     ***REMOVED***
 
     for name in name_list.iter().cloned().cycle().skip(which_week as usize).take(1){
@@ -169,6 +155,7 @@ async fn send_postrequest_to_change_table_json(which_week: i64, who:&str) {
             "marc" => {marc_task="kitchen".to_string();***REMOVED***
             "mikiya" => {mikiya_task="kitchen".to_string();***REMOVED***
             "niclas" => {niclas_task="kitchen".to_string();***REMOVED***
+            &_ =>{"nein nein nein".to_string();***REMOVED***
         ***REMOVED***
     ***REMOVED***
 
@@ -177,6 +164,7 @@ async fn send_postrequest_to_change_table_json(which_week: i64, who:&str) {
             "marc" => {marc_task="bathroom".to_string();***REMOVED***
             "mikiya" => {mikiya_task="bathroom".to_string();***REMOVED***
             "niclas" => {niclas_task="bathroom".to_string();***REMOVED***
+            &_ =>{"nein nein nein".to_string();***REMOVED***
         ***REMOVED***
     ***REMOVED***
 
@@ -185,6 +173,7 @@ async fn send_postrequest_to_change_table_json(which_week: i64, who:&str) {
             "marc" => {marc_task="doorway".to_string();***REMOVED***
             "mikiya" => {mikiya_task="doorway".to_string();***REMOVED***
             "niclas" => {niclas_task="doorway".to_string();***REMOVED***
+            &_ =>{"nein nein nein".to_string();***REMOVED***
         ***REMOVED***
     ***REMOVED***
 
@@ -195,32 +184,19 @@ async fn send_postrequest_to_change_table_json(which_week: i64, who:&str) {
         week: which_week as usize,
     ***REMOVED***;
 
+    let json = serde_json::to_string(&table)?;
+
     //let params: [((&str, String), (&str, String, String), (&str, String, String), (&str, String, String)); 1]= ((&"week".to_string(), which_week.to_string()), (who, (*string_date).to_string(),"kitchen".to_string()), (whoelse[0], "0".to_string(),"kitchen".to_string()), (whoelse[1], "0".to_string(),"kitchen".to_string());
     let response = reqwest::Client::new()
-    .post("http://192.168.0.81:8000/user")
-    .form(&params)
+    .post(format!("{***REMOVED***{***REMOVED***", IPOFBACKEND, "/tables"))
+    .header("Content-Type", "application/json")
+    .body(json)
     .send()
-    .await
-    .expect("send");
-    println!("Response status {***REMOVED***", response.status());
+    .await;
+    //println!("Response status {***REMOVED***", response.status());
 
-
+Ok(())
 ***REMOVED***
-
-async fn send_pullrequest_for_table_json<'a>(tables:&'a UseStateHandle<Vec<Table>>)-> Result<(Vec<Table>,&'a UseStateHandle<Vec<Table>>), reqwest::Error>{
-    let echo_json :Vec<Table>  = reqwest::Client::new()
-        .get("http://127.0.0.1:8000/example.json")
-        .send()
-        .await?
-        .json()
-        .await?;
-
-    println!("{:#?***REMOVED***", echo_json);
-    //let tables: Vec<Table> = echo_json.json().await?;
-     Ok((echo_json,tables))
-***REMOVED***
-
-
 
 #[function_component(Main)]
 fn main() -> Html {
@@ -231,34 +207,8 @@ fn main() -> Html {
     ***REMOVED***
 ***REMOVED***
 
-
-
-
-
-
-
-
 use log::info;
 use wasm_bindgen::JsValue;
-//use wasm-logger;
-
-
-
-
-
-
-
-
-
-
-
-
-
-async fn map_err_example<'a>( tables : &'a UseStateHandle<Vec<Table>>){
-    let mut tables = tables.clone();
- // tables.set(send_pullrequest_for_table_json().await.unwrap());
-
-***REMOVED***
 
 fn smoothen(vec: Vec<(usize, usize, usize)>) -> Vec<(usize, usize, usize)> {
     let mut result = vec![];
@@ -270,9 +220,41 @@ fn smoothen(vec: Vec<(usize, usize, usize)>) -> Vec<(usize, usize, usize)> {
             else if i + 1 < vec.len(){
             let (prev_r, prev_g, prev_b) = result[i - 1];
             let (next_r, next_g, next_b) = vec[i + 1];
-            let r_value = (prev_r*40 + next_r) / 51;
-            let g_value = (prev_g*40 + next_g) / 51;
-            let b_value = (prev_b*40 + next_b) / 51;
+
+            let mut m_r = 1;
+            let mut d_r = 1;
+
+            if prev_r != 0 {
+                m_r=40;
+                d_r=51
+            
+            ***REMOVED***
+
+            let mut m_g = 1;
+            let mut d_g = 1;
+
+            if prev_g != 0 {
+                m_g=40;
+                d_g=51
+            
+            ***REMOVED***
+
+            let mut m_b = 1;
+            let mut d_b = 1;
+
+            if prev_b != 0 {
+                m_b=40;
+                d_b=51
+            
+            ***REMOVED***
+
+            let mut r_value = (prev_r*m_r + next_r) /d_r;
+            let mut g_value = (prev_g*m_g + next_g) / d_g;
+            let mut b_value = (prev_b*m_b + next_b) / d_b;
+
+            if r == 100{r_value=100;***REMOVED***
+            if b == 100{b_value=100;***REMOVED***
+            if g == 100{g_value=100;***REMOVED***
             result.push((r_value, g_value, b_value));
             ***REMOVED***
         ***REMOVED***
@@ -280,25 +262,10 @@ fn smoothen(vec: Vec<(usize, usize, usize)>) -> Vec<(usize, usize, usize)> {
     result
 ***REMOVED***
 
-
-
-
-//static mut tables: Option<UseStateHandle<Vec<_>>> = None;
-
-
 use gloo_net::http::Request;
-//use pin_utils::pin_mut;
-//use pin_utils::unpin;
-//use std::marker::Unpin;
-//use std::pin::Pin;
-//use yew;
 
 #[function_component(App)]
 fn app() -> Html {
-
-
-
-    
 
     let selected_table = use_state(|| None);
     let on_table_select = {
@@ -307,51 +274,13 @@ fn app() -> Html {
                     selected_table.set(Some(table))
                 ***REMOVED***)
             ***REMOVED***;
-
- 
-    
-/* 
-    struct MyStruct {
-        vec: UseStateHandle<Vec<Table>>
-    ***REMOVED***
-
-    let mut tables:UseStateHandle<Vec<_>> = use_state(|| vec![]);
-        pin_mut!(tables);
-    //let mut tables: Vec<Table>= vec![];
-    //let tables = tables.clone();
-    //wasm_bindgen_futures::spawn_local(map_err_example(&tables));
-    //wasm_bindgen_futures::spawn_local(send_postrequest_to_change_table_json());
-    //wasm_bindgen_futures::spawn_local(send_pullrequest_for_table_json(&mut &tables));
-//use_effect_with_deps(move |_| {
-    
-wasm_bindgen_futures::spawn_local(send_pullrequest_for_table_json( &mut tables).then(move |result| async move {
-    //let  &mut tables = &mut tables.clone();
-    
-    match result {
-        Ok(value) => {
-            //let tables = tables.clone();
-            //tables=value;
-            &mut value.1.set(value.0);
-            
-        ***REMOVED***,
-        Err(err) => {
-            // handle the error
-        ***REMOVED***
-    ***REMOVED***
-    //drop(tables);
-    //Unpin(tables);
-***REMOVED***));
-
-//tables = tables.clone(); 
-//let my_struct = MyStruct { vec: tables ***REMOVED***;
-*/
         let zustande = use_state(|| vec![]);
     {
         let zustande = zustande.clone();
         use_effect_with_deps(move |_| {
             let zustande = zustande.clone();
             wasm_bindgen_futures::spawn_local(async move {
-                let fetched_states: Vec<LastDone> = Request::get("http://192.168.0.81:8000/zustande.json")
+                let fetched_states: Vec<LastDone> = Request::get(&format!("{***REMOVED***{***REMOVED***", IPOFBACKEND, "/zustande.json"))
                     .send()
                     .await
                     .unwrap()
@@ -364,15 +293,12 @@ wasm_bindgen_futures::spawn_local(send_pullrequest_for_table_json( &mut tables).
                 println!("ghrghr");
                 println!("ghrghr");
                 //let object = JsValue::from(tables);
-                info!("Hello {:#?***REMOVED***", zustande);
+                //info!("Hello {:#?***REMOVED***", zustande);
             ***REMOVED***);
             || ()
         ***REMOVED***, ());
     ***REMOVED***
-    info!("Hello {:#?***REMOVED***", zustande);
-
-
- 
+    info!("zustande {:#?***REMOVED***", zustande);
 
     let tables = use_state(|| vec![]);
     {
@@ -380,7 +306,7 @@ wasm_bindgen_futures::spawn_local(send_pullrequest_for_table_json( &mut tables).
         use_effect_with_deps(move |_| {
             let tables = tables.clone();
             wasm_bindgen_futures::spawn_local(async move {
-                let fetched_tables: Vec<Table> = Request::get("http://192.168.0.81:8000/example.json")
+                let fetched_tables: Vec<Table> = Request::get(&format!("{***REMOVED***{***REMOVED***", IPOFBACKEND, "/example.json"))
                     .send()
                     .await
                     .unwrap()
@@ -392,19 +318,11 @@ wasm_bindgen_futures::spawn_local(send_pullrequest_for_table_json( &mut tables).
                 println!("ghrghr");
                 println!("ghrghr");
                 println!("ghrghr");
-                //let object = JsValue::from(tables);
-                info!("Hello {:#?***REMOVED***", tables);
             ***REMOVED***);
             || ()
         ***REMOVED***, ());
     ***REMOVED***
-    info!("Hello {:#?***REMOVED***", tables);
-    //wasm_bindgen_futures::spawn_local(send_postrequest_to_change_table_json());
 
-    
-    
-
-    //let name_list = ["niclas","marc","mikiya"];
     let start_time = Local.ymd(2023, 01, 01).and_hms(08, 00, 0);
     let date_today = Local::now();
     let weeks_elapsed;
@@ -418,11 +336,13 @@ wasm_bindgen_futures::spawn_local(send_pullrequest_for_table_json( &mut tables).
         weeks_elapsed = 0;
         days_elapsed = 0;
     ***REMOVED***
-
-    let mut environment_of_the_fourteen_days:Vec<(usize,usize,usize)> = Vec::new();  
-    let mut fourteen_days:Vec<(String,(usize,usize,usize))> = Vec::new();  
-    let mut date = start_time + Duration::weeks(weeks_elapsed);
     
+    let mut environment_of_the_fourteen_days:Vec<(usize,usize,usize)> = Vec::new();  
+    let mut fourteen_days:Vec<(String,(usize,usize,usize))> = Vec::new();
+    let mut fourteen_weeks:Vec<String> = Vec::new();
+    let mut date = start_time + Duration::weeks(weeks_elapsed);
+    let mut week_date_start = start_time + Duration::weeks(weeks_elapsed);
+    let mut week_date_end = start_time + Duration::weeks(weeks_elapsed) + Duration::days(6);
 
     let mut kitchen:Vec<NaiveDate> = Vec::new();
     let mut doorway:Vec<NaiveDate> = Vec::new();
@@ -432,9 +352,9 @@ wasm_bindgen_futures::spawn_local(send_pullrequest_for_table_json( &mut tables).
     println!("Hello, world!");
 
      for zustand in zustande.iter() {
-        kitchen.push(NaiveDate::parse_from_str(&zustand.kitchen, "%Y-%m-%d").unwrap());
-        doorway.push(NaiveDate::parse_from_str(&zustand.doorway, "%Y-%m-%d").unwrap());
-        bathroom.push(NaiveDate::parse_from_str(&zustand.bathroom, "%Y-%m-%d").unwrap());
+        kitchen.push(NaiveDate::parse_from_str(&zustand.kitchen, "%m-%d-%Y").unwrap());
+        doorway.push(NaiveDate::parse_from_str(&zustand.doorway, "%m-%d-%Y").unwrap());
+        bathroom.push(NaiveDate::parse_from_str(&zustand.bathroom, "%m-%d-%Y").unwrap());
     ***REMOVED***
     kitchen.sort_by(|a, b| b.cmp(a));
     doorway.sort_by(|a, b| b.cmp(a));
@@ -455,35 +375,117 @@ wasm_bindgen_futures::spawn_local(send_pullrequest_for_table_json( &mut tables).
             how_was_the_bathroom_back_then=100;
         ***REMOVED***
         else {how_was_the_bathroom_back_then=0;***REMOVED***
-         if bathroom.contains(&((date + Duration::days(span-10)).naive_local().date())){
+         if doorway.contains(&((date + Duration::days(span-10)).naive_local().date())){
             how_was_the_doorway_back_then=100;
         ***REMOVED***
         else {how_was_the_doorway_back_then=0;***REMOVED***
         environment_of_the_fourteen_days.push((how_was_the_kitchen_back_then,how_was_the_bathroom_back_then,how_was_the_doorway_back_then));
     ***REMOVED***
 
-    info!("Hello {:#?***REMOVED***", environment_of_the_fourteen_days);
+    //info!("env_14 {:#?***REMOVED***", environment_of_the_fourteen_days);
+    info!("env14 before {:#?***REMOVED***", environment_of_the_fourteen_days);
     let environment_of_the_fourteen_days = smoothen(environment_of_the_fourteen_days);
-    info!("Hello {:#?***REMOVED***", environment_of_the_fourteen_days);
+    info!("env14 after {:#?***REMOVED***", environment_of_the_fourteen_days);
 
     for blah in 0..14 {
         let temp_date=format!("{***REMOVED***-{:02***REMOVED***-{:02***REMOVED***", date.year(), date.month(), date.day());
-        //let temp_date=format!("{:02***REMOVED***-{:02***REMOVED***-{***REMOVED***", date.day(), date.month(), date.year());
+        let temp_week_date=format!("{:02***REMOVED***-{:02***REMOVED***-{***REMOVED*** bis {:02***REMOVED***-{:02***REMOVED***-{***REMOVED***", week_date_start.day(), week_date_start.month(), week_date_start.year(), week_date_end.day(), week_date_end.month(), week_date_end.year());
+        fourteen_weeks.push(temp_week_date);
         fourteen_days.push((temp_date, environment_of_the_fourteen_days[blah+9]));
-        date = date + Duration::days(1);   
+        date = date + Duration::days(1);
+        week_date_start = week_date_start + Duration::days(7);   
+        week_date_end = week_date_end + Duration::days(7);   
     ***REMOVED***
+    info!("day0 {:#?***REMOVED***", fourteen_days[0].1);
+    info!("day1 {:#?***REMOVED***", fourteen_days[1].1);
+    info!("day2 {:#?***REMOVED***", fourteen_days[2].1);
+    info!("day4 {:#?***REMOVED***", fourteen_days[4].1);
+    info!("day6 {:#?***REMOVED***", fourteen_days[6].1);
+    info!("day8 {:#?***REMOVED***", fourteen_days[8].1);
+    info!("day9 {:#?***REMOVED***", fourteen_days[9].1);
+    info!("day10 {:#?***REMOVED***", fourteen_days[10].1);
 
+    let on_modal_X = Callback::from( move |_| {
+        match gloo_utils::document()
+        .get_element_by_id("modal_child")
+        .expect("Expected to find a #modal_child element")
+        .set_attribute("style", "display:none;"){
+            Ok(_)=>{info!("modal_succeeded");***REMOVED***
+            Err(_)=>{info!("modal_failed");***REMOVED***
+        ***REMOVED***
+    ***REMOVED***);
 
-    //let name_list_yew_thingie= vec!["niclas","marc","mikiya","niclas","marc","mikiya","niclas","marc","mikiya","niclas","marc","mikiya","niclas","marc","mikiya","niclas"];
-    //let name_list_yew_thingie = name_list.iter().map(|name| html! {
-    //    <p>{format!("name: {***REMOVED***", name)***REMOVED***</p>
-    //***REMOVED***).collect::<Html>();
+    let on_modal_affirm = Callback::from( move |_| {
+        match gloo_utils::document()
+        .get_element_by_id("modal_child")
+        .expect("Expected to find a #modal_child element")
+        .set_attribute("style", "display:none;"){
+            Ok(_)=>{info!("modal_succeeded");***REMOVED***
+            Err(_)=>{info!("modal_failed");***REMOVED***
+        ***REMOVED***
 
+        let modal_name_fetch = gloo_utils::document()
+        .get_element_by_id("namensspezifisch")
+        .expect("Expected to find a #modal_child element")
+        .inner_html();
+         info!("modal_child_display_attribute {:#?***REMOVED***",modal_name_fetch.as_str());
 
+         let mut index = 0;
+         match modal_name_fetch.as_str() {
+            "niclas"=>{index=0***REMOVED***
+            "marc"=>{index=1***REMOVED***
+            "mikiya"=>{index=2***REMOVED***
+            &_=>{info!("haeh was wurde hier denn fuer ein name gegeben");***REMOVED***
+         ***REMOVED***
 
-    //let mut iteration_counter;
+         let future = send_postrequest_to_change_table_json(weeks_elapsed, name_list[index]);
+         wasm_bindgen_futures::spawn_local(async move {
+        match future.await{
+            Ok(_)=>{info!("post reqwest succeeded");***REMOVED***
+            Err(_)=>{info!("post reqwest failed");***REMOVED***
+        ***REMOVED***
+                   
+        ***REMOVED***);
+
+        info!("we will reload now");
+
+        let timeout = Timeout::new(2_000, move || {
+             match gloo_utils::window().location().reload(){
+            Ok(_)=>{info!("reload succeeded")***REMOVED***
+            Err(_)=>{info!("reload failed")***REMOVED***
+            ***REMOVED***
+        ***REMOVED***);
+        timeout.forget();
+        info!("if you see this we haven´t reloaded yet");           
+    ***REMOVED***);
+
+    let modal_child = html!{
+        <div id="modal_child" style="display:none;" content="name:none" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" onclick={ move |_|{on_modal_X.emit("");***REMOVED******REMOVED***>{"X"***REMOVED***</button>
+                    <h2>{"Bist du"***REMOVED***</h2>
+                    <h2 id="namensspezifisch">{"Modal Header"***REMOVED***</h2>
+                </div>
+            <div class="modal-body">
+                <p id="modal_text">{"Das Bestätigen ist bindend" ***REMOVED***</p>
+                <button class="glow-on-hover" onclick={ move |_|{on_modal_affirm.emit("");***REMOVED******REMOVED***>{"Bestätigen"***REMOVED***</button>    
+            </div>
+            <div class="modal-footer">
+                <h3>{"Hauhaltsplan v 0.1"***REMOVED***</h3>
+            </div>
+            </div>
+        </div>
+    ***REMOVED***;
+
     html! {
+       
         <div id="wrapper">
+
+            <div id="modal_host" class="modal">
+            <Modal children={modal_child***REMOVED*** />
+            </div>
+
             <div>
                 <table class="center">
                 <tr>
@@ -496,12 +498,6 @@ wasm_bindgen_futures::spawn_local(send_pullrequest_for_table_json( &mut tables).
                 {for fourteen_days.iter().enumerate().map(|(i,x)| html! { 
                     <tr>
                     <td class="date">{x.0.clone()***REMOVED***</td>
-//                    <td><button>{ "marc" ***REMOVED***</button></td>
-//                    <td><button>{ "marc" ***REMOVED***</button></td>
-//                    <td><button>{ "marc" ***REMOVED***</button></td>
-//                        if (0>1)
-//                         {for name_list.iter().skip(0).take(3).map(|x| html! { <td><NamesList names={name_list_yew_thingie***REMOVED***  /></td> ***REMOVED***)***REMOVED***
-                             //<td>{name_list***REMOVED*** </td>
                         {whatever_there_be_in_the_nth_line(i, fourteen_days.clone(),date_today.clone(), tables.clone(), weeks_elapsed, days_elapsed, zustande.clone())***REMOVED***
                     </tr> ***REMOVED***)***REMOVED***
             </table>
@@ -516,21 +512,14 @@ wasm_bindgen_futures::spawn_local(send_pullrequest_for_table_json( &mut tables).
                     <th>{"Flur"***REMOVED***</th>
                 </tr>
 
-                {for fourteen_days.iter().enumerate().map(|(i,x)| html! { 
+                {for fourteen_weeks.iter().enumerate().map(|(i,x)| html! { 
                     <tr>
-                    <td>{x.0.clone()***REMOVED***</td>
-                    {for name_list.iter().cloned().cycle().skip(i).take(3).map(|x| html! { <td>{x***REMOVED***</td> ***REMOVED***)***REMOVED***
+                    <td>{x.clone()***REMOVED***</td>
+                    {for name_list.iter().cloned().cycle().skip(i).take(3).map(|x| html! { <td class="weeksplanned">{x***REMOVED***</td> ***REMOVED***)***REMOVED***
                     </tr> ***REMOVED***)***REMOVED***
             </table>
             
            <TablesList tables={(*tables).clone()***REMOVED*** on_click={on_table_select.clone()***REMOVED*** />
-            {for tables.iter().enumerate().map(|(i,x)| html! { 
-                    <tr>
-                    <p>{x.week***REMOVED***</p>
-                    <p>{"oh mann"***REMOVED***</p>
-                    {for tables.iter().skip(i).take(3).map(|x| html! { <td>{x.marc.0.to_string()***REMOVED***</td> ***REMOVED***)***REMOVED***
-                    </tr> ***REMOVED***)***REMOVED***
-                    <p>{"oh mannmannmann"***REMOVED***</p>
             
         </div>
     ***REMOVED***
@@ -538,14 +527,11 @@ wasm_bindgen_futures::spawn_local(send_pullrequest_for_table_json( &mut tables).
 
 ***REMOVED*** 
 
-
 use std::cell::Cell;
 
 thread_local!(static WHEN: Cell<String> = Cell::new("".to_string()));
-//static WHEN:&str = "sdf";
 use chrono::DateTime;
 use chrono::NaiveDate;
-use std::sync::{Arc, Mutex***REMOVED***;
 use yew::{ Html***REMOVED***;
 fn whatever_there_be_in_the_nth_line(line: usize, fourteen_days: Vec<(std::string::String, (usize, usize, usize))>, date_today: DateTime<Local>, tables:yew::UseStateHandle<Vec<Table>>, weeks_elapsed:i64, days_elapsed:i64, zustande:yew::UseStateHandle<Vec<LastDone>>) -> Html {
 
@@ -564,16 +550,51 @@ fn whatever_there_be_in_the_nth_line(line: usize, fourteen_days: Vec<(std::strin
     ***REMOVED***
 
 
-    let onclick = Callback::from(move |x: &str| {
-        wasm_bindgen_futures::spawn_local(send_postrequest_to_change_table_json(weeks_elapsed,name1.clone()));
+    let onclick = Callback::from(move |_| {
+        
+        gloo_utils::document()
+        .get_element_by_id("namensspezifisch")
+        .expect("Expected to find a #namensspezifisch element")
+        .set_inner_html(format!("{***REMOVED***", name1).as_str());
+
+        match gloo_utils::document()
+        .get_element_by_id("modal_child")
+        .expect("Expected to find a #modal_child element")
+        .set_attribute("style", "display:block;"){
+            Ok(_)=>{info!("modal_succeeded");***REMOVED***
+            Err(_)=>{info!("modal_failed");***REMOVED***
+        ***REMOVED***  
+
     ***REMOVED***);
 
-    let onclick2 = Callback::from(move |x: &str| {
-        wasm_bindgen_futures::spawn_local(send_postrequest_to_change_table_json(weeks_elapsed,name2.clone()));
+    let onclick2 = Callback::from(move |_| {
+        gloo_utils::document()
+        .get_element_by_id("namensspezifisch")
+        .expect("Expected to find a #namensspezifisch element")
+        .set_inner_html(format!("{***REMOVED***", name2).as_str());
+
+        match gloo_utils::document()
+        .get_element_by_id("modal_child")
+        .expect("Expected to find a #modal_child element")
+        .set_attribute("style", "display:block;"){
+            Ok(_)=>{info!("modal_succeeded");***REMOVED***
+            Err(_)=>{info!("modal_failed");***REMOVED***
+        ***REMOVED*** 
     ***REMOVED***);
 
-    let onclick3 = Callback::from(move |x: &str| {
-       wasm_bindgen_futures::spawn_local(send_postrequest_to_change_table_json(weeks_elapsed,name3.clone()));
+    let onclick3 = Callback::from(move |_| {
+        gloo_utils::document()
+        .get_element_by_id("namensspezifisch")
+        .expect("Expected to find a #namensspezifisch element")
+        .set_inner_html(format!("{***REMOVED***", name3).as_str());
+
+        match gloo_utils::document()
+        .get_element_by_id("modal_child")
+        .expect("Expected to find a #modal_child element")
+        .set_attribute("style", "display:block;"){
+            Ok(_)=>{info!("modal_succeeded");***REMOVED***
+            Err(_)=>{info!("modal_failed");***REMOVED***
+        ***REMOVED*** 
     ***REMOVED***);
 
     let day_in_table_as_chrono_thingy = NaiveDate::parse_from_str(&fourteen_days[line].0.clone(), "%Y-%m-%d").unwrap();
@@ -582,9 +603,10 @@ fn whatever_there_be_in_the_nth_line(line: usize, fourteen_days: Vec<(std::strin
       { return html! {
         
         <>
-        <td style ={format!("background-color: hsl({***REMOVED***, 100%, 100%);", 40)***REMOVED***><button onclick={ move |_|{ onclick.emit(name1);***REMOVED******REMOVED***>{format!("Button {***REMOVED***", name1)***REMOVED***</button></td>
+        <td><button class="glow-on-hover" onclick={ move |_|{ onclick.emit(name1);***REMOVED******REMOVED***>{format!("Button {***REMOVED***", name1)***REMOVED***</button></td>
         <td><button onclick={ move |_|{ onclick2.emit(name2);***REMOVED******REMOVED***>{format!("Button {***REMOVED***", name2)***REMOVED***</button></td>
         <td><button onclick={ move |_|{ onclick3.emit(name3);***REMOVED******REMOVED***>{format!("Button {***REMOVED***", name3)***REMOVED***</button></td>
+        
             </>
         ***REMOVED***
 
@@ -593,12 +615,7 @@ fn whatever_there_be_in_the_nth_line(line: usize, fourteen_days: Vec<(std::strin
     ***REMOVED***
     else
     {
-        //return html!{
-       //{for zustande.iter().cloned().cycle().skip(weeks_elapsed as usize).take(3).map(|(x)| html! { 
-       //     <td><button onclick={onclick.clone()***REMOVED***>{format!("Button {***REMOVED***", x.bathroom)***REMOVED***</button></td>
-       // ***REMOVED***)
-       // ***REMOVED*** 
-       // ***REMOVED***
+
        let mut hue_vec : Vec<f64> = Vec::new();
         hue_vec.push( 1.2 * fourteen_days[line].1.0 as f64);
         hue_vec.push( 1.2 * fourteen_days[line].1.1 as f64);
@@ -606,14 +623,13 @@ fn whatever_there_be_in_the_nth_line(line: usize, fourteen_days: Vec<(std::strin
         
         return html!
         {
-            //<td style ={format!("background-color: hsl({***REMOVED***, 100%, 50%);", hue1)***REMOVED***></td>
-            //<td style ={format!("background-color: hsl({***REMOVED***, 100%, 50%);", hue2)***REMOVED***></td>
-            //<td style ={format!("background-color: hsl({***REMOVED***, 100%, 50%);", hue3)***REMOVED***></td>
 
-             {for hue_vec.iter().map(|(x)| html! { 
-            <td style ={format!("background-color: hsl({***REMOVED***, 100%, 50%);", x)***REMOVED***></td>
-        ***REMOVED***)
-        ***REMOVED***
+             {for hue_vec.iter().map(|x| html! { 
+                <>
+                <td style ={format!("background-color: hsl({***REMOVED***, 100%, 50%);", x)***REMOVED***></td>
+                </>
+            ***REMOVED***)
+            ***REMOVED***
 
         ***REMOVED***
 
@@ -625,18 +641,11 @@ fn whatever_there_be_in_the_nth_line(line: usize, fourteen_days: Vec<(std::strin
     ***REMOVED*** 
 ***REMOVED***
 
-fn button_click_handler(id: usize) {
-    // handle button click here
-***REMOVED***
 
 fn main() {
 
     wasm_logger::init(wasm_logger::Config::default());
-    let object = JsValue::from("world");
-    info!("Hello {***REMOVED***", object.as_string().unwrap());
 
-    
-    
     let now = Utc::now();
 
     let (is_pm, hour) = now.hour12();
