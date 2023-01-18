@@ -6,7 +6,7 @@ use chrono::{TimeZone, Duration, Local, Datelike, Timelike, Utc};
 use yew::{html, Callback};
 use gloo::timers::callback::{Timeout};
 
-static IPOFBACKEND: &str = "insert backend ip";
+static IPOFBACKEND: &str = "backend ip here";
 
 #[derive(Clone, PartialEq, Debug)]
 struct ModalObj {
