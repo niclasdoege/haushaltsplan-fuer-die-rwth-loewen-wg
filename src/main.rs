@@ -1,34 +1,34 @@
 
 use yew::prelude::*;
 use yew_router::prelude::*;
-use serde::{Deserialize, Serialize***REMOVED***;
-use chrono::{TimeZone, Duration, Local, Datelike, Timelike, Utc***REMOVED***;
-use yew::{html, Callback***REMOVED***;
-use gloo::timers::callback::{Timeout***REMOVED***;
+use serde::{Deserialize, Serialize};
+use chrono::{TimeZone, Duration, Local, Datelike, Timelike, Utc};
+use yew::{html, Callback};
+use gloo::timers::callback::{Timeout};
 
 static IPOFBACKEND: &str = "insert backend ip";
 
 #[derive(Clone, PartialEq, Debug)]
 struct ModalObj {
     modal_content:Html,
-***REMOVED***
+}
 #[derive(Properties, PartialEq)]
 pub struct ModalProps {
     #[prop_or_default]
     pub children: Children,
-***REMOVED***
+}
 
 #[function_component(Modal)]
-fn modal(ModalProps {children***REMOVED***: &ModalProps) -> Html {
+fn modal(ModalProps {children}: &ModalProps) -> Html {
     let modal_host = gloo::utils::document()
         .get_element_by_id("modal_host")
         .expect("Expected to find a #modal_host element");
 
     create_portal(
-        html!{ {for children.iter()***REMOVED*** ***REMOVED***,
+        html!{ {for children.iter()} },
         modal_host.into(),
     )
-***REMOVED***
+}
 
 static name_list:[&str; 3] = ["niclas","marc","mikiya"];
 
@@ -36,7 +36,7 @@ static name_list:[&str; 3] = ["niclas","marc","mikiya"];
 struct Model {
     // other fields here
     button_click_callback: Callback<usize>,
-***REMOVED***
+}
 
 #[derive(Clone, Routable, PartialEq)]
 enum Route {
@@ -47,7 +47,7 @@ enum Route {
     #[not_found]
     #[at("/404")]
     NotFound,
-***REMOVED***
+}
 
 #[function_component(Secure)]
 fn secure() -> Html {
@@ -56,23 +56,23 @@ fn secure() -> Html {
     let onclick = Callback::from(move |_| navigator.push(&Route::Home));
     html! {
         <div>
-            <h1>{ "Secure" ***REMOVED***</h1>
-            <button {onclick***REMOVED***>{ "Go Home" ***REMOVED***</button>
+            <h1>{ "Secure" }</h1>
+            <button {onclick}>{ "Go Home" }</button>
         </div>
-    ***REMOVED***
-***REMOVED***
+    }
+}
 
 fn switch(routes: Route) -> Html {
     match routes {
         Route::Home => html! { 
             <App />
-             ***REMOVED***,
+             },
         Route::Secure => html! {
             <Secure />
-        ***REMOVED***,
-        Route::NotFound => html! { <h1>{ "404" ***REMOVED***</h1> ***REMOVED***,
-    ***REMOVED***
-***REMOVED***
+        },
+        Route::NotFound => html! { <h1>{ "404" }</h1> },
+    }
+}
 
 #[derive(Clone, PartialEq, Deserialize, Serialize, Debug)]
 struct Table {
@@ -80,7 +80,7 @@ struct Table {
     mikiya: (String,String),
     niclas: (String,String),
     week: usize,
-***REMOVED***
+}
 
 
 #[derive(Clone, PartialEq, Deserialize, Debug)]
@@ -89,18 +89,18 @@ struct LastDone {
     doorway: String,
     bathroom: String,
     id: usize
-***REMOVED***
+}
 
 
 #[derive(Properties, PartialEq)]
 struct TablesListProps {
     tables: Vec<Table>,
     on_click: Callback<Table>
-***REMOVED***
+}
 
 #[function_component(TablesList)]
 #[allow(non_snake_case)]
-fn Tables_list(TablesListProps { tables, on_click ***REMOVED***: &TablesListProps) -> Html {
+fn Tables_list(TablesListProps { tables, on_click }: &TablesListProps) -> Html {
     let on_click = on_click.clone();
     tables.iter().map(|table| {
         let on_table_select = {
@@ -108,28 +108,28 @@ fn Tables_list(TablesListProps { tables, on_click ***REMOVED***: &TablesListProp
             let table = table.clone();
             Callback::from(move |_| {
                     on_click.emit(table.clone())
-                ***REMOVED***)
-            ***REMOVED***;
+                })
+            };
     
             html! {
-                <p key={table.week***REMOVED*** onclick={on_table_select***REMOVED***>{format!("week: {***REMOVED*** mikiya: {***REMOVED*** marc: {***REMOVED***, niclas:{***REMOVED***", table.week, table.mikiya.0, table.marc.0, table.niclas.0)***REMOVED***</p>
-            ***REMOVED***
-        ***REMOVED***).collect()
-***REMOVED***
+                <p key={table.week} onclick={on_table_select}>{format!("week: {} mikiya: {} marc: {}, niclas:{}", table.week, table.mikiya.0, table.marc.0, table.niclas.0)}</p>
+            }
+        }).collect()
+}
 
 #[derive(Properties, PartialEq)]
 struct NamesListProps {
     names: Vec<String>,
-***REMOVED***
+}
 
 use std::error::Error;
 
 async fn send_postrequest_to_change_table_json(which_week: i64, who:&str) -> Result<(), Box<(dyn Error + 'static)>>{
     
-        //let temp_date=format!("{:02***REMOVED***-{:02***REMOVED***-{***REMOVED***", date.day(), date.month(), date.year());
+        //let temp_date=format!("{:02}-{:02}-{}", date.day(), date.month(), date.year());
         //fourteen_days.push((temp_date, environment_of_the_fourteen_days[blah+9]));
     let date_today = Local::now();
-    let string_date=format!("{:02***REMOVED***-{:02***REMOVED***-{***REMOVED***", date_today.month(), date_today.day(), date_today.year());
+    let string_date=format!("{:02}-{:02}-{}", date_today.month(), date_today.day(), date_today.year());
     //let mut when = "we";
     let mut whoelse = vec!["marc","niclas","mikiya"];
     //whoelse.remove_item(who);
@@ -144,68 +144,68 @@ async fn send_postrequest_to_change_table_json(which_week: i64, who:&str) -> Res
     let mut niclas_task = String::from("0"); 
 
     match who {
-        "marc" => {what_to_tell_marc=string_date;***REMOVED***
-        "mikiya" => {what_to_tell_mikiya=string_date;***REMOVED***
-        "niclas" => {what_to_tell_niclas=string_date;***REMOVED***
-        &_ =>{what_to_tell_niclas="nein nein nein".to_string();***REMOVED***
-    ***REMOVED***
+        "marc" => {what_to_tell_marc=string_date;}
+        "mikiya" => {what_to_tell_mikiya=string_date;}
+        "niclas" => {what_to_tell_niclas=string_date;}
+        &_ =>{what_to_tell_niclas="nein nein nein".to_string();}
+    }
 
     for name in name_list.iter().cloned().cycle().skip(which_week as usize).take(1){
         match name {
-            "marc" => {marc_task="kitchen".to_string();***REMOVED***
-            "mikiya" => {mikiya_task="kitchen".to_string();***REMOVED***
-            "niclas" => {niclas_task="kitchen".to_string();***REMOVED***
-            &_ =>{"nein nein nein".to_string();***REMOVED***
-        ***REMOVED***
-    ***REMOVED***
+            "marc" => {marc_task="kitchen".to_string();}
+            "mikiya" => {mikiya_task="kitchen".to_string();}
+            "niclas" => {niclas_task="kitchen".to_string();}
+            &_ =>{"nein nein nein".to_string();}
+        }
+    }
 
     for name in name_list.iter().cloned().cycle().skip(which_week as usize +1).take(1){
         match name {
-            "marc" => {marc_task="bathroom".to_string();***REMOVED***
-            "mikiya" => {mikiya_task="bathroom".to_string();***REMOVED***
-            "niclas" => {niclas_task="bathroom".to_string();***REMOVED***
-            &_ =>{"nein nein nein".to_string();***REMOVED***
-        ***REMOVED***
-    ***REMOVED***
+            "marc" => {marc_task="bathroom".to_string();}
+            "mikiya" => {mikiya_task="bathroom".to_string();}
+            "niclas" => {niclas_task="bathroom".to_string();}
+            &_ =>{"nein nein nein".to_string();}
+        }
+    }
 
     for name in name_list.iter().cloned().cycle().skip(which_week as usize +2).take(1){
         match name {
-            "marc" => {marc_task="doorway".to_string();***REMOVED***
-            "mikiya" => {mikiya_task="doorway".to_string();***REMOVED***
-            "niclas" => {niclas_task="doorway".to_string();***REMOVED***
-            &_ =>{"nein nein nein".to_string();***REMOVED***
-        ***REMOVED***
-    ***REMOVED***
+            "marc" => {marc_task="doorway".to_string();}
+            "mikiya" => {mikiya_task="doorway".to_string();}
+            "niclas" => {niclas_task="doorway".to_string();}
+            &_ =>{"nein nein nein".to_string();}
+        }
+    }
 
     let table = Table {
         marc: (what_to_tell_marc.to_string(), marc_task.to_string()),
         mikiya: (what_to_tell_mikiya.to_string(), mikiya_task.to_string()),
         niclas: (what_to_tell_niclas.to_string(), niclas_task.to_string()),
         week: which_week as usize,
-    ***REMOVED***;
+    };
 
     let json = serde_json::to_string(&table)?;
 
     //let params: [((&str, String), (&str, String, String), (&str, String, String), (&str, String, String)); 1]= ((&"week".to_string(), which_week.to_string()), (who, (*string_date).to_string(),"kitchen".to_string()), (whoelse[0], "0".to_string(),"kitchen".to_string()), (whoelse[1], "0".to_string(),"kitchen".to_string());
     let response = reqwest::Client::new()
-    .post(format!("{***REMOVED***{***REMOVED***", IPOFBACKEND, "/tables"))
+    .post(format!("{}{}", IPOFBACKEND, "/tables"))
     .header("Content-Type", "application/json")
     .body(json)
     .send()
     .await;
-    //println!("Response status {***REMOVED***", response.status());
+    //println!("Response status {}", response.status());
 
 Ok(())
-***REMOVED***
+}
 
 #[function_component(Main)]
 fn main() -> Html {
     html! {
         <BrowserRouter>
-            <Switch<Route> render={switch***REMOVED*** /> // <- must be child of <BrowserRouter>
+            <Switch<Route> render={switch} /> // <- must be child of <BrowserRouter>
         </BrowserRouter>
-    ***REMOVED***
-***REMOVED***
+    }
+}
 
 use log::info;
 use wasm_bindgen::JsValue;
@@ -215,8 +215,8 @@ fn smoothen(vec: Vec<(usize, usize, usize)>) -> Vec<(usize, usize, usize)> {
     for (i, &(r, g, b)) in vec.iter().enumerate() {
         if r == 100 && g == 100 && b == 100 {
             result.push((100, 100, 100));
-        ***REMOVED*** else {
-            if i == 0 {result.push((0, 0, 0));***REMOVED***
+        } else {
+            if i == 0 {result.push((0, 0, 0));}
             else if i + 1 < vec.len(){
             let (prev_r, prev_g, prev_b) = result[i - 1];
             let (next_r, next_g, next_b) = vec[i + 1];
@@ -228,7 +228,7 @@ fn smoothen(vec: Vec<(usize, usize, usize)>) -> Vec<(usize, usize, usize)> {
                 m_r=40;
                 d_r=51
             
-            ***REMOVED***
+            }
 
             let mut m_g = 1;
             let mut d_g = 1;
@@ -237,7 +237,7 @@ fn smoothen(vec: Vec<(usize, usize, usize)>) -> Vec<(usize, usize, usize)> {
                 m_g=40;
                 d_g=51
             
-            ***REMOVED***
+            }
 
             let mut m_b = 1;
             let mut d_b = 1;
@@ -246,21 +246,21 @@ fn smoothen(vec: Vec<(usize, usize, usize)>) -> Vec<(usize, usize, usize)> {
                 m_b=40;
                 d_b=51
             
-            ***REMOVED***
+            }
 
             let mut r_value = (prev_r*m_r + next_r) /d_r;
             let mut g_value = (prev_g*m_g + next_g) / d_g;
             let mut b_value = (prev_b*m_b + next_b) / d_b;
 
-            if r == 100{r_value=100;***REMOVED***
-            if b == 100{b_value=100;***REMOVED***
-            if g == 100{g_value=100;***REMOVED***
+            if r == 100{r_value=100;}
+            if b == 100{b_value=100;}
+            if g == 100{g_value=100;}
             result.push((r_value, g_value, b_value));
-            ***REMOVED***
-        ***REMOVED***
-    ***REMOVED***
+            }
+        }
+    }
     result
-***REMOVED***
+}
 
 use gloo_net::http::Request;
 
@@ -272,15 +272,15 @@ fn app() -> Html {
                 let selected_table = selected_table.clone();
                 Callback::from(move |table: Table| {
                     selected_table.set(Some(table))
-                ***REMOVED***)
-            ***REMOVED***;
+                })
+            };
         let zustande = use_state(|| vec![]);
     {
         let zustande = zustande.clone();
         use_effect_with_deps(move |_| {
             let zustande = zustande.clone();
             wasm_bindgen_futures::spawn_local(async move {
-                let fetched_states: Vec<LastDone> = Request::get(&format!("{***REMOVED***{***REMOVED***", IPOFBACKEND, "/zustande.json"))
+                let fetched_states: Vec<LastDone> = Request::get(&format!("{}{}", IPOFBACKEND, "/zustande.json"))
                     .send()
                     .await
                     .unwrap()
@@ -288,17 +288,17 @@ fn app() -> Html {
                     .await
                     .unwrap();
                 zustande.set(fetched_states);
-                println!("{:#?***REMOVED***",zustande);
+                println!("{:#?}",zustande);
                 println!("ghrghr");
                 println!("ghrghr");
                 println!("ghrghr");
                 //let object = JsValue::from(tables);
-                //info!("Hello {:#?***REMOVED***", zustande);
-            ***REMOVED***);
+                //info!("Hello {:#?}", zustande);
+            });
             || ()
-        ***REMOVED***, ());
-    ***REMOVED***
-    info!("zustande {:#?***REMOVED***", zustande);
+        }, ());
+    }
+    info!("zustande {:#?}", zustande);
 
     let tables = use_state(|| vec![]);
     {
@@ -306,7 +306,7 @@ fn app() -> Html {
         use_effect_with_deps(move |_| {
             let tables = tables.clone();
             wasm_bindgen_futures::spawn_local(async move {
-                let fetched_tables: Vec<Table> = Request::get(&format!("{***REMOVED***{***REMOVED***", IPOFBACKEND, "/example.json"))
+                let fetched_tables: Vec<Table> = Request::get(&format!("{}{}", IPOFBACKEND, "/example.json"))
                     .send()
                     .await
                     .unwrap()
@@ -314,14 +314,14 @@ fn app() -> Html {
                     .await
                     .unwrap();
                 tables.set(fetched_tables);
-                println!("{:#?***REMOVED***",tables);
+                println!("{:#?}",tables);
                 println!("ghrghr");
                 println!("ghrghr");
                 println!("ghrghr");
-            ***REMOVED***);
+            });
             || ()
-        ***REMOVED***, ());
-    ***REMOVED***
+        }, ());
+    }
 
     let start_time = Local.ymd(2023, 01, 01).and_hms(08, 00, 0);
     let date_today = Local::now();
@@ -331,11 +331,11 @@ fn app() -> Html {
     if date_today>start_time{
         weeks_elapsed = (date_today-start_time).num_weeks();
         days_elapsed = (date_today-start_time).num_days();
-    ***REMOVED***
+    }
     else {
         weeks_elapsed = 0;
         days_elapsed = 0;
-    ***REMOVED***
+    }
     
     let mut environment_of_the_fourteen_days:Vec<(usize,usize,usize)> = Vec::new();  
     let mut fourteen_days:Vec<(String,(usize,usize,usize))> = Vec::new();
@@ -348,14 +348,14 @@ fn app() -> Html {
     let mut doorway:Vec<NaiveDate> = Vec::new();
     let mut bathroom:Vec<NaiveDate> = Vec::new();
 
-    println!("{:?***REMOVED***", fourteen_days);
+    println!("{:?}", fourteen_days);
     println!("Hello, world!");
 
      for zustand in zustande.iter() {
         kitchen.push(NaiveDate::parse_from_str(&zustand.kitchen, "%m-%d-%Y").unwrap());
         doorway.push(NaiveDate::parse_from_str(&zustand.doorway, "%m-%d-%Y").unwrap());
         bathroom.push(NaiveDate::parse_from_str(&zustand.bathroom, "%m-%d-%Y").unwrap());
-    ***REMOVED***
+    }
     kitchen.sort_by(|a, b| b.cmp(a));
     doorway.sort_by(|a, b| b.cmp(a));
     bathroom.sort_by(|a, b| b.cmp(a));
@@ -369,170 +369,170 @@ fn app() -> Html {
     for span in 0..24 {
         if kitchen.contains(&((date + Duration::days(span-10)).naive_local().date())){
             how_was_the_kitchen_back_then=100;
-        ***REMOVED***
-        else {how_was_the_kitchen_back_then=0;***REMOVED***
+        }
+        else {how_was_the_kitchen_back_then=0;}
         if bathroom.contains(&((date + Duration::days(span-10)).naive_local().date())){
             how_was_the_bathroom_back_then=100;
-        ***REMOVED***
-        else {how_was_the_bathroom_back_then=0;***REMOVED***
+        }
+        else {how_was_the_bathroom_back_then=0;}
          if doorway.contains(&((date + Duration::days(span-10)).naive_local().date())){
             how_was_the_doorway_back_then=100;
-        ***REMOVED***
-        else {how_was_the_doorway_back_then=0;***REMOVED***
+        }
+        else {how_was_the_doorway_back_then=0;}
         environment_of_the_fourteen_days.push((how_was_the_kitchen_back_then,how_was_the_bathroom_back_then,how_was_the_doorway_back_then));
-    ***REMOVED***
+    }
 
-    //info!("env_14 {:#?***REMOVED***", environment_of_the_fourteen_days);
-    info!("env14 before {:#?***REMOVED***", environment_of_the_fourteen_days);
+    //info!("env_14 {:#?}", environment_of_the_fourteen_days);
+    info!("env14 before {:#?}", environment_of_the_fourteen_days);
     let environment_of_the_fourteen_days = smoothen(environment_of_the_fourteen_days);
-    info!("env14 after {:#?***REMOVED***", environment_of_the_fourteen_days);
+    info!("env14 after {:#?}", environment_of_the_fourteen_days);
 
     for blah in 0..14 {
-        let temp_date=format!("{***REMOVED***-{:02***REMOVED***-{:02***REMOVED***", date.year(), date.month(), date.day());
-        let temp_week_date=format!("{:02***REMOVED***-{:02***REMOVED***-{***REMOVED*** bis {:02***REMOVED***-{:02***REMOVED***-{***REMOVED***", week_date_start.day(), week_date_start.month(), week_date_start.year(), week_date_end.day(), week_date_end.month(), week_date_end.year());
+        let temp_date=format!("{}-{:02}-{:02}", date.year(), date.month(), date.day());
+        let temp_week_date=format!("{:02}-{:02}-{} bis {:02}-{:02}-{}", week_date_start.day(), week_date_start.month(), week_date_start.year(), week_date_end.day(), week_date_end.month(), week_date_end.year());
         fourteen_weeks.push(temp_week_date);
         fourteen_days.push((temp_date, environment_of_the_fourteen_days[blah+9]));
         date = date + Duration::days(1);
         week_date_start = week_date_start + Duration::days(7);   
         week_date_end = week_date_end + Duration::days(7);   
-    ***REMOVED***
-    info!("day0 {:#?***REMOVED***", fourteen_days[0].1);
-    info!("day1 {:#?***REMOVED***", fourteen_days[1].1);
-    info!("day2 {:#?***REMOVED***", fourteen_days[2].1);
-    info!("day4 {:#?***REMOVED***", fourteen_days[4].1);
-    info!("day6 {:#?***REMOVED***", fourteen_days[6].1);
-    info!("day8 {:#?***REMOVED***", fourteen_days[8].1);
-    info!("day9 {:#?***REMOVED***", fourteen_days[9].1);
-    info!("day10 {:#?***REMOVED***", fourteen_days[10].1);
+    }
+    info!("day0 {:#?}", fourteen_days[0].1);
+    info!("day1 {:#?}", fourteen_days[1].1);
+    info!("day2 {:#?}", fourteen_days[2].1);
+    info!("day4 {:#?}", fourteen_days[4].1);
+    info!("day6 {:#?}", fourteen_days[6].1);
+    info!("day8 {:#?}", fourteen_days[8].1);
+    info!("day9 {:#?}", fourteen_days[9].1);
+    info!("day10 {:#?}", fourteen_days[10].1);
 
     let on_modal_X = Callback::from( move |_| {
         match gloo_utils::document()
         .get_element_by_id("modal_child")
         .expect("Expected to find a #modal_child element")
         .set_attribute("style", "display:none;"){
-            Ok(_)=>{info!("modal_succeeded");***REMOVED***
-            Err(_)=>{info!("modal_failed");***REMOVED***
-        ***REMOVED***
-    ***REMOVED***);
+            Ok(_)=>{info!("modal_succeeded");}
+            Err(_)=>{info!("modal_failed");}
+        }
+    });
 
     let on_modal_affirm = Callback::from( move |_| {
         match gloo_utils::document()
         .get_element_by_id("modal_child")
         .expect("Expected to find a #modal_child element")
         .set_attribute("style", "display:none;"){
-            Ok(_)=>{info!("modal_succeeded");***REMOVED***
-            Err(_)=>{info!("modal_failed");***REMOVED***
-        ***REMOVED***
+            Ok(_)=>{info!("modal_succeeded");}
+            Err(_)=>{info!("modal_failed");}
+        }
 
         let modal_name_fetch = gloo_utils::document()
         .get_element_by_id("namensspezifisch")
         .expect("Expected to find a #modal_child element")
         .inner_html();
-         info!("modal_child_display_attribute {:#?***REMOVED***",modal_name_fetch.as_str());
+         info!("modal_child_display_attribute {:#?}",modal_name_fetch.as_str());
 
          let mut index = 0;
          match modal_name_fetch.as_str() {
-            "niclas"=>{index=0***REMOVED***
-            "marc"=>{index=1***REMOVED***
-            "mikiya"=>{index=2***REMOVED***
-            &_=>{info!("haeh was wurde hier denn fuer ein name gegeben");***REMOVED***
-         ***REMOVED***
+            "niclas"=>{index=0}
+            "marc"=>{index=1}
+            "mikiya"=>{index=2}
+            &_=>{info!("haeh was wurde hier denn fuer ein name gegeben");}
+         }
 
          let future = send_postrequest_to_change_table_json(weeks_elapsed, name_list[index]);
          wasm_bindgen_futures::spawn_local(async move {
         match future.await{
-            Ok(_)=>{info!("post reqwest succeeded");***REMOVED***
-            Err(_)=>{info!("post reqwest failed");***REMOVED***
-        ***REMOVED***
+            Ok(_)=>{info!("post reqwest succeeded");}
+            Err(_)=>{info!("post reqwest failed");}
+        }
                    
-        ***REMOVED***);
+        });
 
         info!("we will reload now");
 
         let timeout = Timeout::new(2_000, move || {
              match gloo_utils::window().location().reload(){
-            Ok(_)=>{info!("reload succeeded")***REMOVED***
-            Err(_)=>{info!("reload failed")***REMOVED***
-            ***REMOVED***
-        ***REMOVED***);
+            Ok(_)=>{info!("reload succeeded")}
+            Err(_)=>{info!("reload failed")}
+            }
+        });
         timeout.forget();
         info!("if you see this we haven´t reloaded yet");           
-    ***REMOVED***);
+    });
 
     let modal_child = html!{
         <div id="modal_child" style="display:none;" content="name:none" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button class="close" onclick={ move |_|{on_modal_X.emit("");***REMOVED******REMOVED***>{"X"***REMOVED***</button>
-                    <h2>{"Bist du"***REMOVED***</h2>
-                    <h2 id="namensspezifisch">{"Modal Header"***REMOVED***</h2>
+                    <button class="close" onclick={ move |_|{on_modal_X.emit("");}}>{"X"}</button>
+                    <h2>{"Bist du"}</h2>
+                    <h2 id="namensspezifisch">{"Modal Header"}</h2>
                 </div>
             <div class="modal-body">
-                <p id="modal_text">{"Das Bestätigen ist bindend" ***REMOVED***</p>
-                <button class="glow-on-hover" onclick={ move |_|{on_modal_affirm.emit("");***REMOVED******REMOVED***>{"Bestätigen"***REMOVED***</button>    
+                <p id="modal_text">{"Das Bestätigen ist bindend" }</p>
+                <button class="glow-on-hover" onclick={ move |_|{on_modal_affirm.emit("");}}>{"Bestätigen"}</button>    
             </div>
             <div class="modal-footer">
-                <h3>{"Hauhaltsplan v 0.1"***REMOVED***</h3>
+                <h3>{"Hauhaltsplan v 0.1"}</h3>
             </div>
             </div>
         </div>
-    ***REMOVED***;
+    };
 
     html! {
        
         <div id="wrapper">
 
             <div id="modal_host" class="modal">
-            <Modal children={modal_child***REMOVED*** />
+            <Modal children={modal_child} />
             </div>
 
             <div>
                 <table class="center">
                 <tr>
-                    <th class="collumnone">{"Datum"***REMOVED***</th>
-                    <th>{"Kueche"***REMOVED***</th>
-                    <th>{"Bad"***REMOVED***</th>
-                    <th>{"Flur"***REMOVED***</th>
+                    <th class="collumnone">{"Datum"}</th>
+                    <th>{"Kueche"}</th>
+                    <th>{"Bad"}</th>
+                    <th>{"Flur"}</th>
                 </tr>
 
                 {for fourteen_days.iter().enumerate().map(|(i,x)| html! { 
                     <tr>
-                    <td class="date">{x.0.clone()***REMOVED***</td>
-                        {whatever_there_be_in_the_nth_line(i, fourteen_days.clone(),date_today.clone(), tables.clone(), weeks_elapsed, days_elapsed, zustande.clone())***REMOVED***
-                    </tr> ***REMOVED***)***REMOVED***
+                    <td class="date">{x.0.clone()}</td>
+                        {whatever_there_be_in_the_nth_line(i, fourteen_days.clone(),date_today.clone(), tables.clone(), weeks_elapsed, days_elapsed, zustande.clone())}
+                    </tr> })}
             </table>
             <p></p>
             <p></p>
             </div>
             <table class="center">
                 <tr>
-                    <th>{"Woche"***REMOVED***</th>
-                    <th>{"Kueche"***REMOVED***</th>
-                    <th>{"Bad"***REMOVED***</th>
-                    <th>{"Flur"***REMOVED***</th>
+                    <th>{"Woche"}</th>
+                    <th>{"Kueche"}</th>
+                    <th>{"Bad"}</th>
+                    <th>{"Flur"}</th>
                 </tr>
 
                 {for fourteen_weeks.iter().enumerate().map(|(i,x)| html! { 
                     <tr>
-                    <td>{x.clone()***REMOVED***</td>
-                    {for name_list.iter().cloned().cycle().skip(i).take(3).map(|x| html! { <td class="weeksplanned">{x***REMOVED***</td> ***REMOVED***)***REMOVED***
-                    </tr> ***REMOVED***)***REMOVED***
+                    <td>{x.clone()}</td>
+                    {for name_list.iter().cloned().cycle().skip(i).take(3).map(|x| html! { <td class="weeksplanned">{x}</td> })}
+                    </tr> })}
             </table>
             
-           <TablesList tables={(*tables).clone()***REMOVED*** on_click={on_table_select.clone()***REMOVED*** />
+           <TablesList tables={(*tables).clone()} on_click={on_table_select.clone()} />
             
         </div>
-    ***REMOVED***
+    }
     
 
-***REMOVED*** 
+} 
 
 use std::cell::Cell;
 
 thread_local!(static WHEN: Cell<String> = Cell::new("".to_string()));
 use chrono::DateTime;
 use chrono::NaiveDate;
-use yew::{ Html***REMOVED***;
+use yew::{ Html};
 fn whatever_there_be_in_the_nth_line(line: usize, fourteen_days: Vec<(std::string::String, (usize, usize, usize))>, date_today: DateTime<Local>, tables:yew::UseStateHandle<Vec<Table>>, weeks_elapsed:i64, days_elapsed:i64, zustande:yew::UseStateHandle<Vec<LastDone>>) -> Html {
 
     let mut name1 = "1";
@@ -541,13 +541,13 @@ fn whatever_there_be_in_the_nth_line(line: usize, fourteen_days: Vec<(std::strin
 
     for name in name_list.iter().cloned().cycle().skip(weeks_elapsed as usize).take(1){
         name1=name;
-    ***REMOVED***
+    }
     for name in name_list.iter().cloned().cycle().skip(weeks_elapsed as usize + 1).take(1){
         name2=name;
-    ***REMOVED***
+    }
     for name in name_list.iter().cloned().cycle().skip(weeks_elapsed as usize + 2).take(1){
         name3=name;
-    ***REMOVED***
+    }
 
 
     let onclick = Callback::from(move |_| {
@@ -555,47 +555,47 @@ fn whatever_there_be_in_the_nth_line(line: usize, fourteen_days: Vec<(std::strin
         gloo_utils::document()
         .get_element_by_id("namensspezifisch")
         .expect("Expected to find a #namensspezifisch element")
-        .set_inner_html(format!("{***REMOVED***", name1).as_str());
+        .set_inner_html(format!("{}", name1).as_str());
 
         match gloo_utils::document()
         .get_element_by_id("modal_child")
         .expect("Expected to find a #modal_child element")
         .set_attribute("style", "display:block;"){
-            Ok(_)=>{info!("modal_succeeded");***REMOVED***
-            Err(_)=>{info!("modal_failed");***REMOVED***
-        ***REMOVED***  
+            Ok(_)=>{info!("modal_succeeded");}
+            Err(_)=>{info!("modal_failed");}
+        }  
 
-    ***REMOVED***);
+    });
 
     let onclick2 = Callback::from(move |_| {
         gloo_utils::document()
         .get_element_by_id("namensspezifisch")
         .expect("Expected to find a #namensspezifisch element")
-        .set_inner_html(format!("{***REMOVED***", name2).as_str());
+        .set_inner_html(format!("{}", name2).as_str());
 
         match gloo_utils::document()
         .get_element_by_id("modal_child")
         .expect("Expected to find a #modal_child element")
         .set_attribute("style", "display:block;"){
-            Ok(_)=>{info!("modal_succeeded");***REMOVED***
-            Err(_)=>{info!("modal_failed");***REMOVED***
-        ***REMOVED*** 
-    ***REMOVED***);
+            Ok(_)=>{info!("modal_succeeded");}
+            Err(_)=>{info!("modal_failed");}
+        } 
+    });
 
     let onclick3 = Callback::from(move |_| {
         gloo_utils::document()
         .get_element_by_id("namensspezifisch")
         .expect("Expected to find a #namensspezifisch element")
-        .set_inner_html(format!("{***REMOVED***", name3).as_str());
+        .set_inner_html(format!("{}", name3).as_str());
 
         match gloo_utils::document()
         .get_element_by_id("modal_child")
         .expect("Expected to find a #modal_child element")
         .set_attribute("style", "display:block;"){
-            Ok(_)=>{info!("modal_succeeded");***REMOVED***
-            Err(_)=>{info!("modal_failed");***REMOVED***
-        ***REMOVED*** 
-    ***REMOVED***);
+            Ok(_)=>{info!("modal_succeeded");}
+            Err(_)=>{info!("modal_failed");}
+        } 
+    });
 
     let day_in_table_as_chrono_thingy = NaiveDate::parse_from_str(&fourteen_days[line].0.clone(), "%Y-%m-%d").unwrap();
     if day_in_table_as_chrono_thingy==date_today.naive_local().date()
@@ -603,16 +603,16 @@ fn whatever_there_be_in_the_nth_line(line: usize, fourteen_days: Vec<(std::strin
       { return html! {
         
         <>
-        <td><button class="glow-on-hover" onclick={ move |_|{ onclick.emit(name1);***REMOVED******REMOVED***>{format!("Button {***REMOVED***", name1)***REMOVED***</button></td>
-        <td><button onclick={ move |_|{ onclick2.emit(name2);***REMOVED******REMOVED***>{format!("Button {***REMOVED***", name2)***REMOVED***</button></td>
-        <td><button onclick={ move |_|{ onclick3.emit(name3);***REMOVED******REMOVED***>{format!("Button {***REMOVED***", name3)***REMOVED***</button></td>
+        <td><button class="glow-on-hover" onclick={ move |_|{ onclick.emit(name1);}}>{format!("Button {}", name1)}</button></td>
+        <td><button onclick={ move |_|{ onclick2.emit(name2);}}>{format!("Button {}", name2)}</button></td>
+        <td><button onclick={ move |_|{ onclick3.emit(name3);}}>{format!("Button {}", name3)}</button></td>
         
             </>
-        ***REMOVED***
+        }
 
-    ***REMOVED***
+    }
 
-    ***REMOVED***
+    }
     else
     {
 
@@ -626,20 +626,20 @@ fn whatever_there_be_in_the_nth_line(line: usize, fourteen_days: Vec<(std::strin
 
              {for hue_vec.iter().map(|x| html! { 
                 <>
-                <td style ={format!("background-color: hsl({***REMOVED***, 100%, 50%);", x)***REMOVED***></td>
+                <td style ={format!("background-color: hsl({}, 100%, 50%);", x)}></td>
                 </>
-            ***REMOVED***)
-            ***REMOVED***
+            })
+            }
 
-        ***REMOVED***
+        }
 
       
       
             
             
         
-    ***REMOVED*** 
-***REMOVED***
+    } 
+}
 
 
 fn main() {
@@ -651,23 +651,23 @@ fn main() {
     let (is_pm, hour) = now.hour12();
 
     println!(
-        "The current UTC time is {:02***REMOVED***:{:02***REMOVED***:{:02***REMOVED*** {***REMOVED***",
+        "The current UTC time is {:02}:{:02}:{:02} {}",
         hour,
         now.minute(),
         now.second(),
-        if is_pm { "PM" ***REMOVED*** else { "AM" ***REMOVED***);
+        if is_pm { "PM" } else { "AM" });
 
     let (is_common_era, year) = now.year_ce();
     println!(
-        "The current UTC date is {***REMOVED***-{:02***REMOVED***-{:02***REMOVED*** {:?***REMOVED*** ({***REMOVED***)",
+        "The current UTC date is {}-{:02}-{:02} {:?} ({})",
         year,
         now.month(),
         now.day(),
         now.weekday(),
-        if is_common_era { "CE" ***REMOVED*** else { "BCE" ***REMOVED***
+        if is_common_era { "CE" } else { "BCE" }
     );
 
     println!("Hello, world!");
     yew::Renderer::<Main>::new().render();
-***REMOVED***
+}
 

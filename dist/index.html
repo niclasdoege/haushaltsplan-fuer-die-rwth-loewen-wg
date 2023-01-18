@@ -20,17 +20,17 @@
                 var ws = new WebSocket(url);
                 ws.onopen = () => window.location.reload();
                 ws.onclose = reload_upon_connect;
-            ***REMOVED***,
+            },
             poll_interval);
-    ***REMOVED***;
+    };
 
     var ws = new WebSocket(url);
     ws.onmessage = (ev) => {
         const msg = JSON.parse(ev.data);
         if (msg.reload) {
             window.location.reload();
-        ***REMOVED***
-    ***REMOVED***;
+        }
+    };
     ws.onclose = reload_upon_connect;
-***REMOVED***)()
+})()
 </script></body></html>

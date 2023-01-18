@@ -7,12 +7,12 @@ edition = "2021"
 
 [dependencies]
 chrono = "0.4.23"
-reqwest = { version = "0.11.13", features = ["blocking", "json"] ***REMOVED***
+reqwest = { version = "0.11.13", features = ["blocking", "json"] }
 serde_json = "1.0.91"
 #gloo-net = "0.2"
-serde = { version = "1.0", features = ["derive"] ***REMOVED***
+serde = { version = "1.0", features = ["derive"] }
 wasm-bindgen-futures = "0.4"
-yew = { version = "0.20", features = ["csr"] ***REMOVED***
+yew = { version = "0.20", features = ["csr"] }
 yew-router = "0.17.0"
 futures = "0.3.25"
 gloo-net = "0.2.5"

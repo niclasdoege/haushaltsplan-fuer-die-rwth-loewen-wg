@@ -2,7 +2,7 @@ table {
     width: 100vw;
     height: 100vh; 
     table-layout:fixed;
-***REMOVED***
+}
 button{
     font-size: 2em;
     background: rgb(255, 255, 255);
@@ -12,11 +12,11 @@ button{
     margin-left: 2vw;
     margin-right: auto;
     vertical-align:middle;
-***REMOVED***
+}
 button:active {
     background: rgb(36, 36, 36);
     cursor: pointer;
-***REMOVED***
+}
 
 .weeksplanned{
     font-size: 2em;
@@ -24,20 +24,20 @@ button:active {
     text-decoration: wavy;
     text-transform: capitalize;
 
-***REMOVED***
+}
 .date{
     font-size: 2em;
     width: 10vw;
-***REMOVED***
+}
 
 .center {
     margin-left: 0;
     margin-right: auto;
-  ***REMOVED***
+  }
 
 #wrapper {
     margin:0;padding:0;
-  ***REMOVED***
+  }
 
 th, td {
   background-color: rgba(0, 0, 0, 0.5);
@@ -50,13 +50,13 @@ th, td {
   -o-border-radius: 100px;
   font-size: 1em;
   height: 5em;
-***REMOVED***
+}
 
 td { 
     overflow: hidden; 
     text-overflow: ellipsis; 
     word-wrap: break-word;
-***REMOVED***
+}
 
 #modal_child {
     display: none; /* Hidden by default */
@@ -70,7 +70,7 @@ td {
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
     vertical-align: middle;
-  ***REMOVED***
+  }
 
 .modal-content {
     position: relative;
@@ -83,35 +83,35 @@ td {
     animation-name: animatetop;
     animation-duration: 0.4s;
     vertical-align: middle;  
-***REMOVED***
+}
 
 @-webkit-keyframes animatetop {
-    from {top:-300px; opacity:0***REMOVED*** 
-    to {top:0; opacity:1***REMOVED***
-  ***REMOVED***
+    from {top:-300px; opacity:0} 
+    to {top:0; opacity:1}
+  }
   
   @keyframes animatetop {
-    from {top:-300px; opacity:0***REMOVED***
-    to {top:0; opacity:1***REMOVED***
-  ***REMOVED***
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+  }
 
 .modal-header {
     padding: 2px 16px;
     background-color: #5cb85c;
     color: white;
-  ***REMOVED***
+  }
 
 .modal-footer {
     padding: 2px 16px;
     background-color: #5cb85c;
     color: white;
-***REMOVED***
+}
 
 .modal-body {
     padding: 2em 16em;
     display: flex; 
     justify-content: space-between;
-***REMOVED***
+}
 
 .modal_text{
 
@@ -120,7 +120,7 @@ td {
     font-size: medium;
     background-color: #002bff;
     align-self: unset;
-***REMOVED***
+}
 
 .close {
     content: "\00D7";
@@ -128,7 +128,7 @@ td {
     float: right;
     font-size: 3em;
     font-weight: bold;
-  ***REMOVED***
+  }
 
 .affirm {
     content: "Bestätigen";
@@ -141,7 +141,7 @@ td {
     display: inline-block;
     /*width: 100%;*/
 /*    margin: 0 auto; */
-***REMOVED***
+}
 
 .glow-on-hover {
  /*   width: 220px; */
@@ -163,7 +163,7 @@ td {
     margin-right: 2vw;
     margin-right: auto;
     vertical-align:middle;
-***REMOVED***
+}
 
 .glow-on-hover:before {
     content: '';
@@ -180,19 +180,19 @@ td {
     opacity: 0;
     transition: opacity .3s ease-in-out;
     border-radius: 10px;
-***REMOVED***
+}
 
 .glow-on-hover:active {
     color: #000
-***REMOVED***
+}
 
 .glow-on-hover:active:after {
     background: transparent;
-***REMOVED***
+}
 
 .glow-on-hover:hover:before {
     opacity: 1;
-***REMOVED***
+}
 
 .glow-on-hover:after {
     z-index: -1;
@@ -204,18 +204,18 @@ td {
     left: 0;
     top: 0;
     border-radius: 10px;
-***REMOVED***
+}
 
 @keyframes glowing {
-    0% { background-position: 0 0; ***REMOVED***
-    50% { background-position: 400% 0; ***REMOVED***
-    100% { background-position: 0 0; ***REMOVED***
-***REMOVED***
+    0% { background-position: 0 0; }
+    50% { background-position: 400% 0; }
+    100% { background-position: 0 0; }
+}
 
 @media only screen and (max-width: 720px) {
     /* horizontal scrollbar for tables if mobile screen */
     .tablemobile {
         overflow-x: auto;
         display: block;
-    ***REMOVED***
-***REMOVED***
+    }
+}
